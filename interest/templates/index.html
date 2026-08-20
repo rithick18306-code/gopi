@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gold Jewellery Pledge & Interest Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div>
+                <h1>Gold Jewellery Pledge System</h1>
+                <p>Manage pledge records and calculate interest automatically</p>
+            </div>
+            <button type="button" class="btn btn-secondary" id="refreshBtn">Refresh Records</button>
+        </header>
+
+        <main class="layout">
+            <section class="card">
+                <h2 id="formTitle">New Pledge Entry</h2>
+                <form id="pledgeForm">
+                    <input type="hidden" id="pledgeId" value="">
+
+                    <div class="section-title">Customer Details</div>
+                    <div class="grid two-col">
+                        <div class="field">
+                            <label for="customerName">Customer Name *</label>
+                            <input type="text" id="customerName" required placeholder="Enter customer name">
+                        </div>
+                        <div class="field">
+                            <label for="customerPhone">Phone Number *</label>
+                            <input type="tel" id="customerPhone" required placeholder="10-digit mobile number">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="customerAddress">Address</label>
+                        <textarea id="customerAddress" rows="2" placeholder="Customer address (optional)"></textarea>
+                    </div>
+
+                    <div class="section-title">Jewellery Details</div>
+                    <div class="grid three-col">
+                        <div class="field">
+                            <label for="jewelleryType">Jewellery Type *</label>
+                            <input type="text" id="jewelleryType" required placeholder="e.g. Necklace, Bangle">
+                        </div>
+                        <div class="field">
+                            <label for="jewelleryWeight">Weight (grams) *</label>
+                            <input type="number" id="jewelleryWeight" step="0.001" min="0.001" required placeholder="0.000">
+                        </div>
+                        <div class="field">
+                            <label for="jewelleryPurity">Purity</label>
+                            <input type="text" id="jewelleryPurity" placeholder="e.g. 22K">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label for="jewelleryDescription">Description</label>
+                        <textarea id="jewelleryDescription" rows="2" placeholder="Additional jewellery details"></textarea>
+                    </div>
+
+                    <div class="section-title">Loan & Interest Details</div>
+                    <div class="grid two-col">
+                        <div class="field">
+                            <label for="loanAmount">Loan Amount (₹) *</label>
+                            <input type="number" id="loanAmount" step="0.01" min="1" required placeholder="Enter loan amount">
+                        </div>
+                        <div class="field">
+                            <label for="interestRate">Interest Rate (% per year) *</label>
+                            <input type="number" id="interestRate" step="0.01" min="0" value="7" required>
+                        </div>
+                    </div>
+                    <div class="grid two-col">
+                        <div class="field">
+                            <label for="pledgeDate">Pledge Date *</label>
+                            <input type="date" id="pledgeDate" required>
+                        </div>
+                        <div class="field">
+                            <label for="returnDate">Return Date *</label>
+                            <input type="date" id="returnDate" required>
+                        </div>
+                    </div>
+
+                    <div class="actions">
+                        <button type="button" class="btn btn-outline" id="calculateBtn">Calculate Interest</button>
+                        <button type="submit" class="btn btn-primary" id="saveBtn">Save Pledge</button>
+                        <button type="button" class="btn btn-secondary hidden" id="cancelEditBtn">Cancel Edit</button>
+                    </div>
+                </form>
+
+                <div id="calculationResult" class="result-panel hidden">
+                    <h3>Interest Calculation</h3>
+                    <div class="result-grid">
+                        <div class="result-item">
+                            <span>Total Days</span>
+                            <strong id="resultDays">0</strong>
+                        </div>
+                        <div class="result-item">
+                            <span>Per-Day Interest</span>
+                            <strong id="resultPerDay">₹0.00</strong>
+                        </div>
+                        <div class="result-item">
+                            <span>Total Interest</span>
+                            <strong id="resultInterest">₹0.00</strong>
+                        </div>
+                        <div class="result-item highlight">
+                            <span>Final Payable Amount</span>
+                            <strong id="resultFinal">₹0.00</strong>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="messageBox" class="message hidden"></div>
+            </section>
+
+            <section class="card">
+                <div class="records-header">
+                    <h2>Pledge Records</h2>
+                    <span id="recordCount" class="badge">0 records</span>
+                </div>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Customer</th>
+                                <th>Jewellery</th>
+                                <th>Loan</th>
+                                <th>Rate</th>
+                                <th>Days</th>
+                                <th>Interest</th>
+                                <th>Final Amount</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="pledgeTableBody">
+                            <tr>
+                                <td colspan="10" class="empty-state">No pledge records found.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
